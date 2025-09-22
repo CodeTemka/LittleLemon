@@ -7,6 +7,10 @@ from .serializers import menuSerializer, bookingSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+
+from django.contrib.auth.models import User
+from rest_framework import viewsets
+from .serializers import UserSerializer
 # Create your views here.
 
 class bookingView(APIView):
@@ -32,3 +36,8 @@ class menuView(APIView):
 @permission_classes([IsAuthenticated])
 def protected_view(request):
     return Response({"message": "This is a protected view accessible only to authenticated users."})
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
