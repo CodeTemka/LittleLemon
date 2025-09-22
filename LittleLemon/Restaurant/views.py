@@ -4,6 +4,9 @@ from rest_framework.response import Response
 
 from .models import Menu, Booking
 from .serializers import menuSerializer, bookingSerializer
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 class bookingView(APIView):
@@ -24,3 +27,8 @@ class menuView(APIView):
         menu_items = Menu.objects.all()
         serializer = menuSerializer(menu_items, many=True)
         return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def protected_view(request):
+    return Response({"message": "This is a protected view accessible only to authenticated users."})
